@@ -102,11 +102,17 @@ gapminder %>%
   mutate(gdp = pop * gdpPercap)
 
 ##example:
-# Find the maximum gdpPerCap of Egypt and Vietnam. Create a new column. (I want just one number that is the max of those two countries)
+# Find the maximum GDP of Egypt and Vietnam. Create a new column. (I want just one number that is the max of those two countries)
 
 gapminder %>% 
   filter(country %in% c("Egypt", "Vietnam")) %>%
-  mutate(maxGDP = max(gdpPercap))
+  mutate(gdp = pop * gdpPercap) %>% 
+  mutate(maxGDP = max(gdp))
+
+#or
+
+mutate(gdp = pop * gdpPercap,
+       maxGDP = max(gdp))
 
 ```
 
