@@ -9,9 +9,73 @@ output: html_document
 
 We're learning ggplot2 It's going to be amazing. 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+# install and load tidyverse
+#install.packages("tidyverse") # note on Windows use double quot
+
+#load installed packages using  'library()'
+library(tidyverse)
+
+#National Parks in California
+ca <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/ca.csv") 
+
+#Acadia National Park
+acadia <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/acadia.csv")
+
+#Southeast US National Parks
+se <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/se.csv")
+
+#2016 Visitation for all Pacific West National Parks
+visit_16 <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/visit_16.csv")
+
+#All Nationally designated sites in Massachusetts
+mass <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/mass.csv")
+
 ```
+
+start with California ('ca') dataset
+
+```{r}
+head(ca)
+View(ca)
+```
+
+Plot visitation to all CA NAtional Parks over time
+
+```{r}
+ggplot(data = ca) +
+  geom_point(aes(x = year, y = visitors))
+```
+
+```{r}
+ggplot(data = ca) +
+  geom_point(aes(x = year, y = visitors, color = park_name))
+```
+
+```{r}
+ggplot(data = ca) +
+  geom_point(aes(x = year, y = visitors, color = park_name)) +
+  labs(x = "Year",
+       y = "Visitation",
+       title = "California National Park Visitation") +
+  theme_bw() + #this utilizes a different theme (dark and light)
+  theme(legend.title = element_blank()) #this removes legent title
+```
+ 
+Exercise 5.8 
+ 
+```{r}
+ggplot(data = se) +
+  geom_point(aes(x = year, y = visitors, color = state)) +
+  labs(x = "Year",
+       y = "Visitation",
+       title = "Visitation to National Parks in the Southest US") +
+  theme_minimal() + #this utilizes a different theme (dark and light)
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45, size = 14))
+  
+```
+
 
 ## R Markdown
 
