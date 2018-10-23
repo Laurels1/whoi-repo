@@ -116,4 +116,46 @@ mutate(gdp = pop * gdpPercap,
 
 ```
 
+#'group_by()' groups!
+
+```{r}
+
+## with mutate()
+gap_grouped <- gapminder %>% 
+  group_by(country) %>% 
+  mutate(gdp = pop * gdpPercap,
+         max_gdp = max(gdp)) %>% 
+  ungroup()
+#View(gap_grouped)
+
+## with summarize() or summarise()
+
+gap_summarized <- gapminder %>% 
+  group_by(country) %>% 
+  mutate(gdp = pop * gdpPercap) %>% 
+  summarise(max_gdp = max(gdp)) %>% 
+  ungroup()
+
+#View(gap_summarized)
+
+```
+
+## 'arrange()' arranges columns
+
+```{r}
+gap_summarized <- gapminder %>% 
+  group_by(country) %>% 
+  mutate(gdp = pop * gdpPercap) %>% 
+  summarise(max_gdp = max(gdp)) %>% 
+  ungroup() %>% 
+  arrange(max_gdp)
+
+
+#View(gap_summarized)
+```
+
+
+
+
+
 
