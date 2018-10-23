@@ -148,7 +148,7 @@ gap_summarized <- gapminder %>%
   mutate(gdp = pop * gdpPercap) %>% 
   summarise(max_gdp = max(gdp)) %>% 
   ungroup() %>% 
-  arrange(max_gdp)
+  arrange(desc(max_gdp))
 
 
 #View(gap_summarized)
