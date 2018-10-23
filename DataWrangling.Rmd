@@ -187,5 +187,115 @@ lj2 <- left_join(co2, gap_2007, by = "country")
 
 
 
+```{r}
+## read in gapminder data in wide format
+gap_wide <- readr::read_csv('https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder_wide.csv')
 
+
+```
+
+## tidyr::gather()
+
+- puttting a - in front of a variable name in the gather statement keeps the variable as is, not gatthered
+- key is the column names, new name that you provide (eg. obstype_year)
+- value is the values that were under the columns
+
+
+```{r}
+gap_long <- gap_wide %>% 
+  gather(key = obstype_year,
+         value = obs_values,
+         -continent, -country)
+
+```
+
+## tidyr::separate()
+
+- convert = TRUE converts all number columns to numeric
+
+
+```{r}
+gap_long <- gap_wide %>% 
+  gather(key = obstype_year,
+         value = obs_values,
+         -continent, -country)  %>% 
+  separate(col = obstype_year,
+           into = c("obs_type", "year"),
+           sep = "_", 
+           convert = TRUE)
+
+#str(gap_long)
+
+```
+
+## plot long data
+
+```{r}
+canada_df <- gap_long %>%
+  filter(country == "Canada",
+         obs_type == "lifeExp")
+
+ggplot(data = canada_df, aes(x = year, y = obs_values)) +
+  geom_line()
+  
+```
+
+Plot the life expectancy of all countries in the Americas
+
+```{r}
+life_df <- gap_long %>% 
+  filter(obs_type == "lifeExp",
+         continent == "Americas")
+
+ggplot(data = life_df, aes(x = year, y = obs_values, color = country)) +
+  geom_line()
+  
+  
+```
+
+Exercise 7.5
+
+Calculate and plot the mean life expectancy for each continent over time from 1982-2007.
+
+```{r}
+meanlife <- gap_long %>% 
+ filter(obs_type == "lifeExp", 
+year %in% c(1982:2007)) %>%
+ group_by(continent, year) %>%  
+  summarize(mean_life = mean(obs_values)) %>% 
+  ungroup()
+  
+#plot using ggplot
+ggplot(data= meanlife, aes(x = year, y = mean_life, color = continent)) +
+  geom_line() +
+  labs(x = "Year",
+       y = "Age (years)",
+       title = "Mean life expectancy") +
+  theme_bw()
+
+
+```
+
+## spread()
+
+- takes unique values in obs_type and makes a new column for each using obs_values
+
+```{r}
+gap_normal <- gap_long %>% 
+  spread(key = obs_type,
+         value = obs_values)
+
+
+```
+
+7.6 Exercise 
+
+Convert back to wide data set
+
+```{r}
+gap_wide_new <- gap_long %>% 
+  unite(col = names, obs_type, year, sep = "_") %>% 
+  spread(key = names,
+         value = obs_values)
+```
 
